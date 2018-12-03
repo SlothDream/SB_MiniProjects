@@ -31,7 +31,7 @@ WHERE membercost > 0
 
 /* Q2: How many facilities do not charge a fee to members? */
 
-SELECT name
+SELECT COUNT(name)
 FROM Facilities
 WHERE membercost = 0
 
@@ -42,7 +42,7 @@ facilities in question. */
 
 SELECT facid, name, membercost, monthlymaintenance
 FROM Facilities
-WHERE membercost >v0
+WHERE membercost > 0
 AND membercost < (monthlymaintenance * .2) 
 
 /* Q4: How can you retrieve the details of facilities with ID 1 and 5?
@@ -59,7 +59,7 @@ more than $100? Return the name and monthly maintenance of the facilities
 in question. */
 
 SELECT name, monthlymaintenance, 
-	CASE WHEN monthlymaintenance >v100 THEN 'expensive'
+	CASE WHEN monthlymaintenance > 100 THEN 'expensive'
 	ELSE 'cheap' END AS cost
 FROM Facilities
 
@@ -124,5 +124,5 @@ SELECT Facilities.name AS facility, SUM(Bookings.slots *
 FROM Bookings
 JOIN Facilities ON Facilities.facid = Bookings.facid
 GROUP BY facility
-HAVING SUM(Bookings.slots * (CASE WHEN Bookings.memid =0 THEN Facilities.guestcost ELSE Facilities.membercost END)) > 1000
+HAVING SUM(Bookings.slots * (CASE WHEN Bookings.memid =0 THEN Facilities.guestcost ELSE Facilities.membercost END)) < 1000
 ORDER BY revenue DESC
